@@ -1,4 +1,4 @@
-package sample;
+package HomeWork4;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,11 +10,6 @@ public class Controller {
     public TextField textField;
     @FXML
     public TextArea textArea;
-
-    @FXML
-    public void sendHello() {
-        System.out.println("Hello");
-    }
 
     @FXML
     public void sendMsg(ActionEvent actionEvent) {
