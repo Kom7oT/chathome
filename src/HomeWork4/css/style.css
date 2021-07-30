@@ -1,0 +1,30 @@
+.root{
+    -fx-font-size: 18;
+    /*-fx-background-color: chartreuse;*/
+    /*    -fx-background-image: url("https://flor2u.ru/images/uploads/conversion/85c/85cd3a71267f3f7a463e94f799f6470f/85cd3a71267f3f7a463e94f799f6470f-large.jpg");*/
+        -fx-background-image: url("/image/1.jpg");
+        -fx-background-size: 100% 100%;
+}
+
+.button{
+    -fx-background-color: #60e260;
+}
+
+.button:hover{
+    -fx-background-color: darkgreen;
+    -fx-text-fill: gold;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+#addBtn{
+    -fx-background-color: #60bfe2;
+}
+
+.text-area{
+    -fx-background-color: gold;
+    -fx-control-inner-background: gold;
+    -fx-text-fill: blue;
+    -fx-highlight-text-fill: #000000;
+    -fx-highlight-fill: coral;
+}
