@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -31,6 +32,10 @@ public class Server {
         } finally {
             try {
                 server.close();
+            } catch (SocketTimeoutException e) {
+                for (ClientHandler c : clients) {
+                    c.sendMsg("/end");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -55,14 +60,14 @@ public class Server {
                 return;
             }
         }
-        sender.sendMsg("Not found user: "+ receiver);
+        sender.sendMsg("Not found user: " + receiver);
     }
 
     public boolean isLoginAuthenticated(String login) {
         for (ClientHandler c : clients) {
-           if(c.getLogin().equals(login)){
-               return true;
-           }
+            if (c.getLogin().equals(login)) {
+                return true;
+            }
         }
         return false;
     }
