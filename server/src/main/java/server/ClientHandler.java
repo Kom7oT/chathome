@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 public class ClientHandler {
     Socket socket;
@@ -26,7 +25,7 @@ public class ClientHandler {
 
             new Thread(() -> {
                 try {
-                    socket.setSoTimeout(120000);
+                    //socket.setSoTimeout(0);
                     // цикл аутентификации
                     while (true) {
                         String str = in.readUTF();
@@ -46,7 +45,9 @@ public class ClientHandler {
                                     sendMsg("/authok " + nickname);
                                     server.subscribe(this);
                                     authenticated = true;
-                                    socket.setSoTimeout(0);
+                                    //==============//
+                                    sendMsg(SQLHandler.getMessageForNick(nickname));
+                                    //==============//
                                     break;
                                 } else {
                                     sendMsg("С этим логином уже вошли");
@@ -89,14 +90,32 @@ public class ClientHandler {
                                 }
                                 server.privateMsg(this, token[1], token[2]);
                             }
+
+                            //==============//
+                            if (str.startsWith("/chnick ")) {
+                                String[] token = str.split("\\s+", 2);
+                                if (token.length < 2) {
+                                    continue;
+                                }
+                                if (token[1].contains(" ")) {
+                                    sendMsg("Ник не может содержать пробелов");
+                                    continue;
+                                }
+                                if (server.getAuthService().changeNick(this.nickname, token[1])) {
+                                    sendMsg("/yournickis " + token[1]);
+                                    sendMsg("Ваш ник изменен на " + token[1]);
+                                    this.nickname = token[1];
+                                    server.broadcastClientList();
+                                } else {
+                                    sendMsg("Не удалось изменить ник. Ник " + token[1] + " уже существует");
+                                }
+                            }
+                            //==============//
                         } else {
                             server.broadcastMsg(this, str);
                         }
                     }
-
-                } catch (SocketTimeoutException e) {
-                    sendMsg("/end");
-                    System.out.println("Client disconnected");
+                // SocketTimeoutException
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
