@@ -46,7 +46,7 @@ public class ClientHandler {
                                     server.subscribe(this);
                                     authenticated = true;
                                     //==============//
-                                    sendMsg(SQLHandler.getMessageForNick(nickname));
+                                    //sendMsg(SQLHandler.getMessageForNick(nickname));
                                     //==============//
                                     break;
                                 } else {
